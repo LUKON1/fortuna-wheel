@@ -4,7 +4,7 @@ const spinBtn = document.querySelector('.spin-btn');
 const wheelTitle = document.querySelector('.wheel-title');
 
 // vars
-const colors =["#fec89a","#d0d4df","#ef476f","#06d6a0","#ffd166"];
+const colors = ["#4f46e5", "#db2777", "#059669", "#d97706", "#2563eb", "#7c3aed"];
 const maxLen = 22;
 let variantList = [];
 let currentRotation = 0; 
@@ -60,6 +60,11 @@ function drawWheel(variantList, colors) {
     ctx.textAlign = "right";
     ctx.fillStyle = textColor;
     
+    ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+    ctx.shadowBlur = 4;
+    ctx.shadowOffsetX = 1;
+    ctx.shadowOffsetY = 1;
+    
     let fontSize = Math.min(16, Math.max(8, (radius * arc) - 5));
     ctx.font = `bold ${fontSize}px sans-serif`;
 
@@ -102,12 +107,13 @@ async function spinHandler(){
     const response = await fetch('/api/random/wheel', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ variantsCount: variantList.length })
+      body: JSON.stringify({ variantsCount: variantList.length, currentRotation })
     });
     
     const data = await response.json();
     if (data.error) throw new Error(data.error);
-    currentRotation += data.targetRotation;
+    
+    currentRotation = data.targetRotation;
 
     const wheel = document.querySelector('.wheel');
     const spinTime = 4000;
