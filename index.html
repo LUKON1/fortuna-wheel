@@ -4,17 +4,30 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Fortuna Wheel</title>
-		<link rel="stylesheet" href="reset.css" />
-		<link rel="stylesheet" href="index.css" />
+		<link rel="stylesheet" href="/src/reset.css" />
+		<link rel="stylesheet" href="/src/index.css" />
 	</head>
 	<body>
 		<div class="container">
 			<div class="controls">
-				<div class="variants-box"></div>
+				<div class="variants-box">
+					<textarea name="variants" placeholder="write your variants here" autofocus="true" rows="10" cols="42"></textarea>
+				</div>
+				<input type="range" min="1" max="100" step="1" value="50">
 				<button class="spin-btn">Spin</button>
 			</div>
-			<div class="wheel"></div>
+			<div class="wheel-box">
+				<h2 class="wheel-title">Wheel of fortune</h2>						
+					<div class="wheel-wrapper">
+						<canvas class="wheel" width="500" height="500"></canvas>
+						<svg class="arrow" width="40px" height="40px" viewBox="0 0 490 490">
+							<g>
+								<polygon points="75.286,490 414.714,490 245,0 "/>
+							</g>
+						</svg>
+					</div>
+				</div>
 		</div>
-		<script src="script.js"></script>
+		<script type="module" src="/src/script.js"></script>
 	</body>
 </html>
