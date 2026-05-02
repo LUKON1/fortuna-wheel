@@ -3,6 +3,7 @@ import confetti from "@hiseb/confetti";
 const variants = document.querySelector('.variants-box textarea');
 const spinBtn = document.querySelector('.spin-btn');
 const wheelTitle = document.querySelector('.wheel-title');
+const clearBtn = document.querySelector('.clear-btn');
 
 // vars
 const colors = ["#4f46e5", "#db2777", "#059669", "#d97706", "#2563eb", "#7c3aed"];
@@ -184,6 +185,10 @@ async function spinHandler(){
 // event listeners
 spinBtn.addEventListener('click', spinHandler);
 variants.addEventListener('input', variantListHandler);
+clearBtn.addEventListener('click',() => {
+  variants.value = "",
+  drawWheel([], colors)
+});
 
 window.onload = () => variants.value = ""
 drawWheel([], colors);

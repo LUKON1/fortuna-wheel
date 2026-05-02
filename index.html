@@ -14,7 +14,15 @@
 		<div class="container">
 			<div class="controls">
 				<div class="variants-box">
-					<textarea name="variants" placeholder="write your variants here" autofocus="true" rows="10" cols="42"></textarea>
+					<div class="textarea-wrapper">
+						<button class="clear-btn" aria-label="Clear variants" title="Clear all">
+							<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<line x1="18" y1="6" x2="6" y2="18"></line>
+								<line x1="6" y1="6" x2="18" y2="18"></line>
+							</svg>
+						</button>
+						<textarea name="variants" placeholder="write your variants here" autofocus="true" rows="10" cols="42"></textarea>
+					</div>
 				</div>
 				<button class="spin-btn">Spin</button>
 			</div>
