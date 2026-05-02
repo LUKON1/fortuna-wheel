@@ -1,0 +1,26 @@
+services:
+  backend:
+    build:
+      context: ./server
+    restart: unless-stopped
+    container_name: casino-backend
+    expose:
+      - "3000"
+    networks:
+      - app
+  frontend:
+    build:
+      context: .
+    container_name: casino-frontend
+    restart: unless-stopped
+    expose:
+      - "80"
+    depends_on:
+      - backend
+    networks:
+      - app
+
+networks:
+  app:
+    driver: bridge
+    
