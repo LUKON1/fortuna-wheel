@@ -1,4 +1,5 @@
 // dom elements
+import confetti from "@hiseb/confetti";
 const variants = document.querySelector('.variants-box textarea');
 const spinBtn = document.querySelector('.spin-btn');
 const wheelTitle = document.querySelector('.wheel-title');
@@ -104,11 +105,18 @@ async function spinHandler(){
     
     spinBtn.disabled = true;
 
+    /* Abort fetch if server doesn't respond within 8 seconds */
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+
     const response = await fetch('/api/random/wheel', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ variantsCount: variantList.length, currentRotation })
+      body: JSON.stringify({ variantsCount: variantList.length, currentRotation }),
+      signal: controller.signal
     });
+
+    clearTimeout(timeoutId);
     
     const data = await response.json();
     if (data.error) throw new Error(data.error);
@@ -147,11 +155,27 @@ async function spinHandler(){
         isSpinning = false;
         wheelTitle.textContent = `Winner: ${variantList[data.winnerIndex]}!`;
         spinBtn.disabled = false;
+
+        /* Normalize rotation to prevent CSS transform value accumulation over many spins */
+        currentRotation = data.targetRotation % 360;
+        wheel.style.transition = 'none';
+        wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+        /* Fire confetti burst from the center of the wheel canvas */
+        const wheelRect = wheel.getBoundingClientRect();
+        const originX = wheelRect.left + wheelRect.width / 2;
+        const originY = wheelRect.top + wheelRect.height / 2;
+
+        confetti({ position: { x: originX, y: originY }, count: 150, velocity: 220 });
+
+        /* Push the confetti canvas below the wheel layer */
+        const confettiCanvas = document.body.querySelector('canvas[style*="pointer-events: none"]');
+        if (confettiCanvas) confettiCanvas.style.zIndex = '1';
     }, spinTime);
 
   } catch (error) {
-    console.log(error);
-    wheelTitle.textContent = "Error! Check console.";
+    console.error(error);
+    wheelTitle.textContent = error.name === 'AbortError' ? "Request timed out." : "Error! Check console.";
     spinBtn.disabled = false;
   }
 }

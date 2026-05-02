@@ -1,0 +1,23 @@
+# Dependencies (installed fresh inside container via npm ci)
+node_modules
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Editor & OS artifacts
+.idea
+.vscode
+.DS_Store
+Thumbs.db
+
+# Docker files (self-referential)
+Dockerfile
+.dockerignore
+
+# Docs & misc
+README.md
+LICENSE
+*.log
+*.md

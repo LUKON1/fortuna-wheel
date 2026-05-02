@@ -11,8 +11,9 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
+    "@hiseb/confetti": "^2.1.0",
     "express": "^5.2.1",
     "vite": "^8.0.3"
   }

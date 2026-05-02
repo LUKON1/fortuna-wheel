@@ -36,7 +36,8 @@ body {
   gap: 20px;
 }
 .wheel {
-  z-index: 0;
+  z-index: 2;
+  position: relative;
   border-radius: 50%;
   box-shadow: 0 0 50px rgba(0,0,0,0.5);
 }
@@ -147,4 +148,6 @@ body {
 }
 .wheel-wrapper {
   position: relative;
+  z-index: 2;
+  isolation: isolate;
 }
