@@ -10,6 +10,7 @@ const colors = ["#4f46e5", "#db2777", "#059669", "#d97706", "#2563eb", "#7c3aed"
 const maxLen = 22;
 let variantList = [];
 let currentRotation = 0; 
+let isSpinning = false;
 
 // functions
 function drawWheel(variantList, colors) {
@@ -105,6 +106,9 @@ async function spinHandler(){
     }
     
     spinBtn.disabled = true;
+    clearBtn.disabled = true;
+    variants.disabled = true;
+    isSpinning = true;
 
     /* Abort fetch if server doesn't respond within 8 seconds */
     const controller = new AbortController();
@@ -130,7 +134,7 @@ async function spinHandler(){
     wheel.style.transition = `transform ${spinTime}ms cubic-bezier(0.1, 0.7, 0.1, 1)`;
     wheel.style.transform = `rotate(${currentRotation}deg)`;
 
-    let isSpinning = true;
+    // isSpinning is set globally to true at the start of spinHandler
     
     function updateTitleRealtime() {
         if (!isSpinning) return;
@@ -156,6 +160,8 @@ async function spinHandler(){
         isSpinning = false;
         wheelTitle.textContent = `Winner: ${variantList[data.winnerIndex]}!`;
         spinBtn.disabled = false;
+        clearBtn.disabled = false;
+        variants.disabled = false;
 
         /* Normalize rotation to prevent CSS transform value accumulation over many spins */
         currentRotation = data.targetRotation % 360;
@@ -178,6 +184,9 @@ async function spinHandler(){
     console.error(error);
     wheelTitle.textContent = error.name === 'AbortError' ? "Request timed out." : "Error! Check console.";
     spinBtn.disabled = false;
+    clearBtn.disabled = false;
+    variants.disabled = false;
+    isSpinning = false;
   }
 }
 
@@ -186,8 +195,10 @@ async function spinHandler(){
 spinBtn.addEventListener('click', spinHandler);
 variants.addEventListener('input', variantListHandler);
 clearBtn.addEventListener('click',() => {
-  variants.value = "",
-  drawWheel([], colors)
+  if (isSpinning) return;
+  variants.value = "";
+  variantList = [];
+  drawWheel([], colors);
 });
 
 window.onload = () => variants.value = ""
